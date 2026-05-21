@@ -1,5 +1,9 @@
 import express, { NextFunction, Request, Response } from 'express';
+import authRoutes from './routes/authRoutes.ts';
+import apiRoutes from './routes/apiRoutes.ts';
+import passport from 'passport';
 import cors from 'cors';
+import './config/passport.ts';
 
 const app = express();
 
@@ -15,6 +19,16 @@ app.use(
 // handle parsing request body
 // reads body of incoming HTTP requests and converts it into usable JS object
 app.use(express.json());
+
+app.use(passport.initialize());
+
+app.use('/', authRoutes);
+// Main page
+app.use('/api', apiRoutes);
+
+app.use('/*', (req: Request, res: Response) => {
+  res.status(404).send('Endpoint does not exist.');
+});
 
 // Global error handler
 const errorHandler = (
