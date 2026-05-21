@@ -15,7 +15,10 @@
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
-    "jsonwebtoken": "^9.0.3"
+    "jsonwebtoken": "^9.0.3",
+    "passport": "^0.7.0",
+    "passport-spotify": "^2.0.0",
+    "pg": "^8.21.0"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.10",
@@ -23,6 +26,9 @@
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.3.5",
+    "@types/passport": "^1.0.17",
+    "@types/passport-spotify": "^2.0.4",
+    "@types/pg": "^8.20.0",
     "nodemon": "^3.1.14",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
