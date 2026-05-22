@@ -1,5 +1,6 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express from 'express';
 import passport from 'passport';
+import authController from '../controllers/authController';
 
 const router = express.Router();
 
@@ -23,18 +24,10 @@ router.get(
 router.get(
   '/auth/spotify/callback',
   passport.authenticate('spotify', { failureRedirect: '/' }),
-  (req: Request, res: Response) => {
-    res.redirect('/');
-  },
+  authController.handleCallback,
 );
 
 // Log out
-router.get('/logout', (req: Request, res: Response, next: NextFunction) => {
-  req.logout((err) => {
-    // ?
-    if (err) return next(err);
-    res.redirect('/');
-  });
-});
+router.get('/logout', authController.handleLogout);
 
 export default router;
