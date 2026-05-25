@@ -1,3 +1,5 @@
+import { pool } from '../config/db.ts';
+
 // collection of every track ID associated with a user, pulled from 4 sources.
 // Liked songs GET /me/tracks
 // Recently played GET /me/player/recently-played
@@ -39,23 +41,20 @@ export async function buildFingerprint(
   // Recently played has a hard cap of 50 tracks total — no pagination needed
   // Recently played
   try {
-    let url = `https://api.spotify.com/v1/me/player/recently-played?limit=50`;
-
-    while (url) {
-      const result = await fetch(url, {
+    const result = await fetch(
+      `https://api.spotify.com/v1/me/player/recently-played?limit=50`,
+      {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
-      });
+      },
+    );
 
-      const recentlyPlayed = await result.json();
+    const recentlyPlayed = await result.json();
 
-      for (const songs of recentlyPlayed.items) {
-        trackIds.add(songs.track.id);
-      }
-
-      url = recentlyPlayed.next;
+    for (const songs of recentlyPlayed.items) {
+      trackIds.add(songs.track.id);
     }
   } catch (error) {
     console.error('Error getting Recently Played', error);
@@ -102,8 +101,6 @@ export async function buildFingerprint(
   try {
     let url = `https://api.spotify.com/v1/me/playlists?limit=50`;
 
-    // TODO: fetch tracks for this playlist using GET /playlists/{playlist.id}/items
-    // then paginate with next, use song.item.id for the track id
     while (url) {
       const result = await fetch(url, {
         method: 'GET',
@@ -120,10 +117,70 @@ export async function buildFingerprint(
         if (playlist.owner.id === spotify_id) {
           // get specific playlist items
           // https://api.spotify.com/v1/playlists/{playlist_id}/items
+
+          let playlistUrl = `https://api.spotify.com/v1/playlists/${playlist.id}/items`;
+
+          while (playlistUrl) {
+            const result = await fetch(playlistUrl, {
+              method: 'GET',
+              headers: {
+                Authorization: `Bearer ${access_token}`,
+              },
+            });
+
+            const userSpecificPlaylist = await result.json();
+
+            for (const songs of userSpecificPlaylist.items) {
+              trackIds.add(songs.item.id);
+            }
+            playlistUrl = userSpecificPlaylist.next;
+          }
         }
       }
+      url = userPlaylist.next;
     } // end of while
   } catch (error) {
     console.error('Error fetching User Playlist', error);
   }
+
+  if (trackIds.size === 0) {
+    console.log('Track id Set is empty');
+    return;
+  }
+
+  // create empty array for placeholders
+  // create empty array for values
+  // loop through trackIds
+  //   push the placeholder group into placeholders
+  //   push user_id and trackId into values
+  // join placeholders with commas
+  // build the full query string
+
+  const valueClauses = [];
+
+  const params = [];
+
+  let firstPlaceholder = 1;
+  let secondPlaceholder = 2;
+
+  // iterate throguh set
+  for (const value of trackIds) {
+    // push
+    valueClauses.push(
+      `($` + firstPlaceholder + ', $' + secondPlaceholder + ')',
+    );
+    params.push(user_id, value);
+
+    //then after increase placeholders
+    firstPlaceholder += 2;
+    secondPlaceholder += 2;
+  }
+
+  // turn placeholder array into a string
+  const placeholderString = valueClauses.join(', ');
+
+  // insert into our database in the fingerprint table
+  const sqlQuery = `INSERT INTO fingerprints (user_id, spotify_track_id) VALUES ${placeholderString} ON CONFLICT DO NOTHING`;
+
+  await pool.query(sqlQuery, params);
 }
