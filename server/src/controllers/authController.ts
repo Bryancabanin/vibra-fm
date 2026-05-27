@@ -40,11 +40,7 @@ const authController: AuthController = {
       return;
     }
 
-    buildFingerprint(
-      req.user.id,
-      req.user.spotify_id,
-      req.user.access_token,
-    ).catch((err) => {
+    buildFingerprint(req.user).catch((err) => {
       console.error('Error building fingerprint', err);
     });
     res.redirect('/');

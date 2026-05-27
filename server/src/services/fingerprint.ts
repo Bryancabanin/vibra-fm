@@ -1,4 +1,5 @@
 import { pool } from '../config/db.ts';
+import { refreshIfNeeded } from './tokenRefresh.ts';
 
 // collection of every track ID associated with a user, pulled from 4 sources.
 // Liked songs GET /me/tracks
@@ -6,11 +7,8 @@ import { pool } from '../config/db.ts';
 // Top tracks (3 calls: short, medium, long)  GET /me/top/tracks
 // Users playlist GET /me/playlists then => GET /playlists/{id}/items
 
-export async function buildFingerprint(
-  user_id: string,
-  spotify_id: string,
-  access_token: string,
-) {
+export const buildFingerprint = async (user: Express.User) => {
+  const access_token = await refreshIfNeeded(user);
   const trackIds = new Set<string>();
 
   // Liked songs GET /me/tracks
@@ -114,7 +112,7 @@ export async function buildFingerprint(
       // iterate through userPlaylist and we need to find owner.id and make sure it equals the spotify_id
 
       for (const playlist of userPlaylist.items) {
-        if (playlist.owner.id === spotify_id) {
+        if (playlist.owner.id === user.spotify_id) {
           // get specific playlist items
           // https://api.spotify.com/v1/playlists/{playlist_id}/items
 
@@ -169,7 +167,7 @@ export async function buildFingerprint(
     valueClauses.push(
       `($` + firstPlaceholder + ', $' + secondPlaceholder + ')',
     );
-    params.push(user_id, value);
+    params.push(user.id, value);
 
     //then after increase placeholders
     firstPlaceholder += 2;
@@ -183,4 +181,4 @@ export async function buildFingerprint(
   const sqlQuery = `INSERT INTO fingerprints (user_id, spotify_track_id) VALUES ${placeholderString} ON CONFLICT DO NOTHING`;
 
   await pool.query(sqlQuery, params);
-}
+};
