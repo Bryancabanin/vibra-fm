@@ -2,8 +2,10 @@ import express, { NextFunction, Request, Response } from 'express';
 import authRoutes from './routes/authRoutes.ts';
 import apiRoutes from './routes/apiRoutes.ts';
 import passport from 'passport';
+import session from 'express-session';
 import cors from 'cors';
 import './config/passport.ts';
+import 'dotenv/config';
 
 const app = express();
 
@@ -20,13 +22,25 @@ app.use(
 // reads body of incoming HTTP requests and converts it into usable JS object
 app.use(express.json());
 
+if (!process.env.SESSION_SECRET) {
+  throw new Error('SESSION_SECRET is required');
+}
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  }),
+);
 app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/', authRoutes);
 // Main page
 app.use('/api', apiRoutes);
 
-app.use('/*', (req: Request, res: Response) => {
+app.use((req: Request, res: Response) => {
   res.status(404).send('Endpoint does not exist.');
 });
 

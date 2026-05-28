@@ -26,6 +26,8 @@ export const buildFingerprint = async (user: Express.User) => {
       const likedSongs = await result.json();
 
       for (const songs of likedSongs.items) {
+        if (!songs.track || !songs.track.id) continue;
+
         trackIds.add(songs.track.id);
       }
 
@@ -52,6 +54,8 @@ export const buildFingerprint = async (user: Express.User) => {
     const recentlyPlayed = await result.json();
 
     for (const songs of recentlyPlayed.items) {
+      if (!songs.track || !songs.track.id) continue;
+
       trackIds.add(songs.track.id);
     }
   } catch (error) {
@@ -81,6 +85,8 @@ export const buildFingerprint = async (user: Express.User) => {
 
         // iterate through the topSongs
         for (const songs of topSongs.items) {
+          if (!songs.id) continue;
+
           if (!trackIds.has(songs.id)) {
             trackIds.add(songs.id);
             numberOfTracks++;
@@ -129,6 +135,8 @@ export const buildFingerprint = async (user: Express.User) => {
             const userSpecificPlaylist = await result.json();
 
             for (const songs of userSpecificPlaylist.items) {
+              if (!songs.item || !songs.item.id) continue;
+
               trackIds.add(songs.item.id);
             }
             playlistUrl = userSpecificPlaylist.next;
