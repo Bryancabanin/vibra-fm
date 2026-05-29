@@ -1,30 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { buildFingerprint } from '../services/fingerprint';
-
-const sendErrorResponse = (
-  res: Response,
-  status: number,
-  message: string,
-  details?: string,
-): void => {
-  res.status(status).json({ error: message, message, details });
-};
-
-const sendBadRequest = (res: Response, message: string): void => {
-  sendErrorResponse(res, 400, message);
-};
-
-const sendUnauthorizedRequest = (res: Response, message: string): void => {
-  sendErrorResponse(res, 401, message);
-};
-
-const sendServerError = (
-  res: Response,
-  message: string,
-  details?: string,
-): void => {
-  sendErrorResponse(res, 500, message, details);
-};
+import { sendUnauthorizedRequest } from '../utils/responseHelpers';
 
 type AuthController = {
   handleCallback: RequestHandler;
