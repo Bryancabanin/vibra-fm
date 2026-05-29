@@ -6,6 +6,8 @@ import { pool } from './db.ts';
 // serializeUser: called after login suceeds. Takes the full user object and decides what small piece
 // of data to store in the session. Since I have a db I just store the user's id
 passport.serializeUser((user, done) => {
+  // debugging
+  // console.log('Serializing user:', user.id);
   done(null, user.id);
 });
 
@@ -13,6 +15,8 @@ passport.serializeUser((user, done) => {
 // and attaches it to the req.user
 passport.deserializeUser(async (id: string, done) => {
   try {
+    // debugging
+    // console.log('Deserializing user:', id);
     const result = await pool.query(`SELECT * FROM users where id = $1`, [id]);
     done(null, result.rows[0]);
   } catch (error) {

@@ -24,6 +24,8 @@ export const buildFingerprint = async (user: Express.User) => {
       });
 
       const likedSongs = await result.json();
+      // debugging
+      // console.log(likedSongs);
 
       for (const songs of likedSongs.items) {
         if (!songs.track || !songs.track.id) continue;
@@ -182,7 +184,7 @@ export const buildFingerprint = async (user: Express.User) => {
     secondPlaceholder += 2;
   }
 
-  // turn placeholder array into a string
+  // turn valueClauses array into a string
   const placeholderString = valueClauses.join(', ');
 
   // insert into our database in the fingerprint table
