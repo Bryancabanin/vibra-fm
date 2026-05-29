@@ -6,13 +6,13 @@ const client = new OpenAI({
 });
 
 export interface RecommendationResult {
-  song: string;
   artist: string;
+  song: string;
 }
 
 export const recommendSongs = async (
-  song: string,
   artist: string,
+  song: string,
 ): Promise<RecommendationResult[]> => {
   try {
     const response = await client.chat.completions.create({
@@ -23,7 +23,7 @@ export const recommendSongs = async (
           content: ` 
           You are a music similarity recommendation system. 
           
-          Given a user-provided ${song} and ${artist}, your job is to recommend songs that are musically similar.
+          Given a user-provided ${artist} and ${song}, your job is to recommend songs that are musically similar.
           
           You should analyze the input song in terms of:
           - Genre
