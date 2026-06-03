@@ -5,6 +5,7 @@ import { sendUnauthorizedRequest } from '../utils/responseHelpers';
 type AuthController = {
   handleCallback: RequestHandler;
   handleLogout: RequestHandler;
+  getMe: RequestHandler;
 };
 
 const authController: AuthController = {
@@ -16,10 +17,19 @@ const authController: AuthController = {
       return;
     }
 
-    buildFingerprint(req.user).catch((err) => {
-      console.error('Error building fingerprint', err);
+    const user = req.user;
+
+    // regenerate session ID after login to prevent session fixation
+    req.session.regenerate((err) => {
+      if (err) {
+        console.error('Session regeneration error', err);
+      }
+
+      buildFingerprint(user).catch((err) => {
+        console.error('Error building fingerprint', err);
+      });
+      res.redirect('/');
     });
-    res.redirect('/');
   },
 
   // Logout
@@ -29,6 +39,15 @@ const authController: AuthController = {
       if (err) return next(err);
       res.redirect('/');
     });
+  },
+
+  getMe: (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user) {
+      console.error('Authentication failed');
+      sendUnauthorizedRequest(res, 'Authentication failed');
+      return;
+    }
+    return res.status(200).json({ spotify_id: req.user.spotify_id });
   },
 };
 

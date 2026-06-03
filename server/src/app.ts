@@ -31,12 +31,19 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      httpOnly: true, // JavaScript can never access the cookie
+      sameSite: 'lax', // blocks cross-site requests (CSRF protection),
+      secure: false, // set to true in production (requires HTTPS)
+      maxAge: 1000 * 60 * 60 * 24, // 24 hours in milliseconds
+    },
   }),
 );
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/', authRoutes);
+app.use('/api', authRoutes);
+
 // Main page
 app.use('/api', recommendationRoutes);
 

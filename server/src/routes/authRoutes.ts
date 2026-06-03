@@ -30,4 +30,7 @@ router.get(
 // Log out
 router.get('/logout', authController.handleLogout);
 
+// GET me
+router.get('/auth/me', authController.getMe);
+
 export default router;
