@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     // checks if user is logged in when app loads
 
-    fetch('http://127.0.0.1:8080/api/auth/me', { credentials: 'include' })
+    fetch('/api/auth/me', { credentials: 'include' })
       .then((res) => {
         setIsLoggedIn(res.ok);
         setIsLoading(false);
