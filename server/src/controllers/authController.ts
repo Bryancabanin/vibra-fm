@@ -25,10 +25,17 @@ const authController: AuthController = {
         console.error('Session regeneration error', err);
       }
 
-      buildFingerprint(user).catch((err) => {
-        console.error('Error building fingerprint', err);
+      req.login(user, (err) => {
+        if (err) {
+          console.error('Login error', err);
+        }
+
+        buildFingerprint(user).catch((err) => {
+          console.error('Error building fingerprint', err);
+        });
+
+        res.redirect('http://127.0.0.1:5173');
       });
-      res.redirect('/');
     });
   },
 
@@ -43,7 +50,7 @@ const authController: AuthController = {
 
   getMe: (req: Request, res: Response, next: NextFunction) => {
     if (!req.user) {
-      console.error('Authentication failed');
+      // console.error('Authentication failed');
       sendUnauthorizedRequest(res, 'Authentication failed');
       return;
     }
