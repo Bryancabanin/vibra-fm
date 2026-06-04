@@ -6,7 +6,7 @@ import {
 } from '../utils/responseHelpers';
 import { recommendSongs } from '../services/songRecommendationService';
 import { filterTracks } from '../services/fingerprintFilterService';
-import { searchTrackId } from '../services/spotifySearchService';
+import { searchTrackId, TrackResult } from '../services/spotifySearchService';
 
 type RecommendationController = {
   handleRecommendation: RequestHandler;
@@ -44,16 +44,26 @@ const recommendationController: RecommendationController = {
         ),
       );
 
-      const trackIds = result
+      const tracks = result
         .filter(
-          (item): item is PromiseFulfilledResult<string> =>
+          (item): item is PromiseFulfilledResult<TrackResult> =>
             item.status === 'fulfilled' && item.value !== null,
         )
-        .map((item) => item.value);
+        .map((item) => item.value); // full TrackResult objects
 
-      const filterIds = await filterTracks(trackIds, req.user);
+      const ids = tracks.map((track) => track.spotify_track_id);
 
-      res.json(filterIds);
+      const filterIds = await filterTracks(ids, req.user);
+
+      // get the filterIds and get information from tracks to send back to the frontend to display the info
+      const finalTracks = tracks.filter((track) =>
+        filterIds.some(
+          (filteredItem) =>
+            filteredItem.spotify_track_id === track.spotify_track_id,
+        ),
+      );
+
+      res.json(finalTracks);
     } catch (error) {
       console.error('Failed to get recommendations', error);
       sendServerError(res, 'Failed to get recommendations');

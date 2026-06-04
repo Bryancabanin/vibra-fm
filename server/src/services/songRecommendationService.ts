@@ -43,7 +43,7 @@ export const recommendSongs = async (
 
           Format:
           - ONLY return exact JSON array of object with artist and song fields
-          - Make 15-20 recommendations
+          - Make 35-45 recommendations
           - DO NOT return markdown ONLY RETURN JSON
           `,
         },
