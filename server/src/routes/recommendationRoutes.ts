@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express from 'express';
 import recommendationController from '../controllers/recommendationController';
 
 const router = express.Router();
