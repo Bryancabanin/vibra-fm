@@ -1,0 +1,12 @@
+import express from 'express';
+import historyController from '../controllers/historyController';
+
+const router = express.Router();
+
+// Route to get history of sessions
+router.get('/history', historyController.handleHistorySession);
+
+// Route to get all songs from specific session
+router.get('/history/:sessionId', historyController.handleHistorySessionTracks);
+
+export default router;
