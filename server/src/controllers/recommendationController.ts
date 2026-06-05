@@ -7,6 +7,7 @@ import {
 import { recommendSongs } from '../services/songRecommendationService';
 import { filterTracks } from '../services/fingerprintFilterService';
 import { searchTrackId, TrackResult } from '../services/spotifySearchService';
+import { saveSessionInfo } from '../services/recommendationSessionService';
 
 type RecommendationController = {
   handleRecommendation: RequestHandler;
@@ -61,6 +62,13 @@ const recommendationController: RecommendationController = {
           (filteredItem) =>
             filteredItem.spotify_track_id === track.spotify_track_id,
         ),
+      );
+
+      // insert recommendation_session and recommendation_track
+      await saveSessionInfo(req.user, artist, song, finalTracks).catch(
+        (err) => {
+          console.error('Error saving session and tracks', err);
+        },
       );
 
       res.json(finalTracks);
