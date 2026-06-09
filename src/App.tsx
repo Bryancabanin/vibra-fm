@@ -3,6 +3,8 @@ import { useAuth } from './hooks/useAuth';
 import { Routes, Route, Navigate } from 'react-router';
 import LoginPage from './pages/LoginPage';
 import DiscoverPage from './pages/DiscoverPage';
+import HistoryPage from './pages/HistoryPage';
+import HistorySessionPage from './pages/HistorySessionPage';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // Show loading state while auth is being checked
@@ -17,7 +19,6 @@ function App() {
 
   return (
     <Routes>
-      {/* <Route path='/' element={<LoginPage />} /> */}
       <Route
         path='/'
         element={
@@ -29,6 +30,22 @@ function App() {
         element={
           <ProtectedRoute>
             <DiscoverPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path='/history'
+        element={
+          <ProtectedRoute>
+            <HistoryPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path='/history/:sessionId'
+        element={
+          <ProtectedRoute>
+            <HistorySessionPage />
           </ProtectedRoute>
         }
       />
