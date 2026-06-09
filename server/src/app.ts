@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import authRoutes from './routes/authRoutes.ts';
 import recommendationRoutes from './routes/recommendationRoutes.ts';
 import historyRoutes from './routes/historyRoutes.ts';
+import playlistRoutes from './routes/playlistRoutes.ts';
 import passport from 'passport';
 import session from 'express-session';
 import cors from 'cors';
@@ -50,6 +51,7 @@ app.use('/api', recommendationRoutes);
 
 // History of recommendation
 app.use('/api', historyRoutes);
+app.use('/api', playlistRoutes);
 
 app.use((req: Request, res: Response) => {
   res.status(404).send('Endpoint does not exist.');
