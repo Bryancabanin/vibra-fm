@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import SaveToPlayListModal from '../components/SaveToPlaylistModal';
 
 interface TrackResult {
   spotify_track_id: string;
@@ -13,8 +14,10 @@ const DiscoverPage = () => {
   const [artist, setArtist] = useState('');
   const [song, setSong] = useState('');
   const [hasSearched, setHasSearched] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [searchResult, setSearchResult] = useState<TrackResult[]>([]);
+  const [sessionId, setSessionId] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   // handler for on change for artist
@@ -57,7 +60,8 @@ const DiscoverPage = () => {
       });
 
       const data = await res.json();
-      setSearchResult(data);
+      setSearchResult(data.finalTracks);
+      setSessionId(data.sessionId);
       setHasSearched(true);
     } catch (error) {
       console.error('Error fetching song', error);
@@ -113,6 +117,16 @@ const DiscoverPage = () => {
             <p>Album: {track.album} </p>
           </div>
         ))}
+
+      {hasSearched && searchResult.length > 0 && (
+        <button onClick={() => setIsModalOpen(true)}>Save to Playlist</button>
+      )}
+
+      <SaveToPlayListModal
+        sessionId={sessionId}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };

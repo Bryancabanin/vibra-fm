@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import SaveToPlayListModal from '../components/SaveToPlaylistModal';
 
 interface HistorySessionPageResult {
   spotify_track_id: string;
@@ -12,6 +13,7 @@ interface HistorySessionPageResult {
 const HistorySessionPage = () => {
   const { sessionId } = useParams();
   const [tracks, setTracks] = useState<HistorySessionPageResult[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -36,6 +38,8 @@ const HistorySessionPage = () => {
     fetchTracks();
   }, [sessionId]);
 
+  if (!sessionId) return <p>Session not found.</p>;
+
   return (
     <div>
       <h3>History Session Page</h3>
@@ -52,6 +56,16 @@ const HistorySessionPage = () => {
             <p>Album: {track.album} </p>
           </div>
         ))}
+
+      {tracks.length > 0 && (
+        <button onClick={() => setIsModalOpen(true)}>Save to Playlist</button>
+      )}
+
+      <SaveToPlayListModal
+        sessionId={sessionId}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };
