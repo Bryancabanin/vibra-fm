@@ -6,6 +6,7 @@ import DiscoverPage from './pages/DiscoverPage';
 import HistoryPage from './pages/HistoryPage';
 import HistorySessionPage from './pages/HistorySessionPage';
 import ProtectedRoute from './components/ProtectedRoute';
+import Layout from './components/Layout';
 
 // Show loading state while auth is being checked
 // handle routing -- shows thed right page based on the URL and auth state
@@ -29,7 +30,9 @@ function App() {
         path='/discover'
         element={
           <ProtectedRoute>
-            <DiscoverPage />
+            <Layout>
+              <DiscoverPage />
+            </Layout>
           </ProtectedRoute>
         }
       />
@@ -37,7 +40,9 @@ function App() {
         path='/history'
         element={
           <ProtectedRoute>
-            <HistoryPage />
+            <Layout>
+              <HistoryPage />
+            </Layout>
           </ProtectedRoute>
         }
       />
@@ -45,7 +50,9 @@ function App() {
         path='/history/:sessionId'
         element={
           <ProtectedRoute>
-            <HistorySessionPage />
+            <Layout>
+              <HistorySessionPage />
+            </Layout>
           </ProtectedRoute>
         }
       />
