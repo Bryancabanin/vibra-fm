@@ -62,6 +62,7 @@ export const saveSessionInfo = async (
     const trackQuery = `INSERT INTO recommendation_tracks (session_id, spotify_track_id, song, artist, album, album_url) VALUES ${placeholderString}`;
     await client.query(trackQuery, params);
     await client.query('COMMIT');
+    return sessionId;
   } catch (error) {
     await client.query('ROLLBACK');
     throw error;

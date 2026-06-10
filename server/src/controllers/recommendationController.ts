@@ -64,14 +64,16 @@ const recommendationController: RecommendationController = {
         ),
       );
 
-      // insert recommendation_session and recommendation_track
-      await saveSessionInfo(req.user, artist, song, finalTracks).catch(
-        (err) => {
-          console.error('Error saving session and tracks', err);
-        },
+      // insert recommendation_session and recommendation_track and we get sessionId out of it.
+      // We use this sessionId for our frontend in order to save the songs from the session into a playlist which requires sessionId
+      const sessionId = await saveSessionInfo(
+        req.user,
+        artist,
+        song,
+        finalTracks,
       );
 
-      res.json(finalTracks);
+      res.json({ sessionId, finalTracks });
     } catch (error) {
       console.error('Failed to get recommendations', error);
       sendServerError(res, 'Failed to get recommendations');
