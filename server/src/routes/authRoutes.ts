@@ -13,7 +13,6 @@ router.get(
       'user-read-recently-played',
       'user-top-read',
       'playlist-read-private',
-      'user-follow-read',
       'playlist-modify-public',
       'playlist-modify-private',
     ],
