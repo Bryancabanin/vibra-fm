@@ -1,4 +1,3 @@
-import './App.css';
 import { useAuth } from './hooks/useAuth';
 import { Routes, Route, Navigate } from 'react-router';
 import LoginPage from './pages/LoginPage';
