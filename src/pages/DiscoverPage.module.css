@@ -1,0 +1,53 @@
+.discoverContainer {
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-border);
+  border-left: 1px solid var(--color-border);
+  border-right: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 30px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.discoverContainer h1 {
+  font-family: var(--font-body);
+  color: var(--color-text-primary);
+}
+
+.discoverContainer p {
+  font-family: var(--font-body);
+  color: var(--color-text-primary);
+  font-size: 15px;
+}
+
+.discoverContainer label {
+  display: flex;
+  flex-direction: column;
+}
+
+.discoverContainer form {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.discoverContainer input {
+  border: 1px solid var(--color-border);
+  background-color: var(--color-background);
+  font-family: var(--font-body);
+  padding: 10px 14px;
+  width: 300px;
+  border-radius: 5px;
+}
+
+.discoverContainer button {
+  align-self: flex-end;
+  font-family: var(--font-body);
+  border: none;
+  background-color: var(--color-accent);
+  color: white;
+  padding: 10px 20px;
+  width: 500px;
+  border-radius: 6px;
+}

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import SaveToPlayListModal from '../components/SaveToPlaylistModal';
+import styles from './DiscoverPage.module.css';
 
 interface TrackResult {
   spotify_track_id: string;
@@ -73,32 +74,33 @@ const DiscoverPage = () => {
 
   return (
     <div>
-      <h1>Discover</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Artist:
-          <input
-            type='text'
-            value={artist}
-            onChange={handleArtistInputChange}
-            placeholder='Artist name...'
-            // onChange={(e) => setArtist(e.target.value)}
-          />
-        </label>
+      <div className={styles.discoverContainer}>
+        <h1>Discover</h1>
+        <p>Enter an Artist and song to find music you've never head before</p>
+        <form onSubmit={handleSubmit}>
+          <label>
+            Artist
+            <input
+              type='text'
+              value={artist}
+              onChange={handleArtistInputChange}
+              placeholder='e.g. Toto'
+            />
+          </label>
 
-        <label>
-          Song:
-          <input
-            type='text'
-            value={song}
-            onChange={handleSongInputChange}
-            placeholder='Song name...'
-            // onChange={(e) => setSong(e.target.value)}
-          />
-        </label>
+          <label>
+            Song
+            <input
+              type='text'
+              value={song}
+              onChange={handleSongInputChange}
+              placeholder='e.g. Africa'
+            />
+          </label>
 
-        <button type='submit'>Search</button>
-      </form>
+          <button type='submit'>Search</button>
+        </form>
+      </div>
 
       {error && <p>{error}</p>}
 
@@ -108,18 +110,21 @@ const DiscoverPage = () => {
         <p>No results found. Try another search.</p>
       )}
 
-      {!loading &&
-        searchResult.map((track) => (
-          <div key={track.spotify_track_id}>
-            <img src={track.albumUrl} alt={track.album} width={150} />
-            <h3>Song: {track.song} </h3>
-            <p>Artist: {track.artist} </p>
-            <p>Album: {track.album} </p>
-          </div>
-        ))}
+      {hasSearched && !loading && searchResult.length > 0 && (
+        <div>
+          <h2>Recommendations</h2>
+          <p>{searchResult.length} songs</p>
+          <button onClick={() => setIsModalOpen(true)}>Save to Playlist</button>
 
-      {hasSearched && searchResult.length > 0 && (
-        <button onClick={() => setIsModalOpen(true)}>Save to Playlist</button>
+          {searchResult.map((track) => (
+            <div key={track.spotify_track_id}>
+              <img src={track.albumUrl} alt={track.album} width={150} />
+              <h3>Song: {track.song} </h3>
+              <p>Artist: {track.artist} </p>
+              <p>Album: {track.album} </p>
+            </div>
+          ))}
+        </div>
       )}
 
       <SaveToPlayListModal
