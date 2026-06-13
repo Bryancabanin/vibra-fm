@@ -37,21 +37,27 @@
 }
 
 .userButton {
-  border: none;
+  border: 1px solid var(--color-border);
   background: none;
   cursor: pointer;
   font-size: 14px;
   color: var(--color-text-primary);
+  padding: 6px 12px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .dropdownContainer {
   position: absolute;
   top: 100%;
   right: 0;
+  margin-top: 2px;
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: 8px;
-  min-width: 160px;
+  min-width: 100%;
   padding: 4px;
 }
 

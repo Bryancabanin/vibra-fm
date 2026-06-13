@@ -39,7 +39,7 @@ const Navbar = () => {
             className={styles.userButton}
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
-            {user?.spotify_id}
+            {user?.spotify_id} ▾
           </button>
 
           {isDropdownOpen && (
