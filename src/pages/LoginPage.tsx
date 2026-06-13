@@ -1,3 +1,5 @@
+import styles from './LoginPage.module.css';
+
 const LoginPage = () => {
   // Create handle login
   const handleSpotifyLogin = () => {
@@ -5,9 +7,21 @@ const LoginPage = () => {
   };
 
   return (
-    <div>
-      <h1>Login Page</h1>
-      <button onClick={handleSpotifyLogin}> Login</button>
+    <div className={styles.loginPage}>
+      <div className={styles.loginContainer}>
+        <h1>Vibra FM</h1>
+        <p>
+          Discover music you've never heard before — filtered from everything
+          you already know.
+        </p>
+        <hr className={styles.hrLine} />
+        <button onClick={handleSpotifyLogin}> Continue with Spotify</button>
+
+        <p className={styles.disclaimer}>
+          We use Spotify content account to personalize recommendations and
+          create playlists on your behalf.
+        </p>
+      </div>
     </div>
   );
 };
