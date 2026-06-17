@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import SaveToPlayListModal from '../components/SaveToPlaylistModal';
+import styles from './HistorySessionPage.module.css';
 
 interface HistorySessionPageResult {
   spotify_track_id: string;
@@ -42,8 +43,10 @@ const HistorySessionPage = () => {
 
   return (
     <div>
-      <h3>History Session Page</h3>
-
+      <button>Back to history</button>
+      <div>
+        <h3>History Session Page</h3>
+      </div>
       {error && <p>{error}</p>}
       {loading && <p>Loading...</p>}
 
