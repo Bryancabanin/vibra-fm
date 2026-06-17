@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import styles from './HistoryPage.module.css';
 
 interface HistoryPageResult {
   id: string;
@@ -38,8 +39,9 @@ const HistoryPage = () => {
   }, []);
 
   return (
-    <div>
-      <h1> History Page</h1>
+    <div className={styles.historyContainer}>
+      <h1>History</h1>
+      <p>All your past discovery sessions</p>
 
       {error && <p>{error}</p>}
       {loading && <p>Loading...</p>}
@@ -49,10 +51,24 @@ const HistoryPage = () => {
           <div
             key={element.id}
             onClick={() => navigate(`/history/${element.id}`)}
+            className={styles.sessionCard}
           >
-            <h3>Song: {element.seed_song}</h3>
-            <p>Artist: {element.seed_artist}</p>
-            <p>Created at: {new Date(element.created_at).toLocaleString()}</p>
+            <div>
+              <h3>
+                {element.seed_song} — {element.seed_artist}
+              </h3>
+              <p>
+                {new Date(element.created_at).toLocaleString('en-US', {
+                  month: 'long',
+                  day: 'numeric',
+                  year: 'numeric',
+                  hour: 'numeric',
+                  minute: '2-digit',
+                  hour12: true,
+                })}
+              </p>
+            </div>
+            <span> › </span>
           </div>
         ))}
     </div>
