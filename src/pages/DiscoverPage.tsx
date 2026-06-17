@@ -111,19 +111,39 @@ const DiscoverPage = () => {
       )}
 
       {hasSearched && !loading && searchResult.length > 0 && (
-        <div>
-          <h2>Recommendations</h2>
-          <p>{searchResult.length} songs</p>
-          <button onClick={() => setIsModalOpen(true)}>Save to Playlist</button>
-
-          {searchResult.map((track) => (
-            <div key={track.spotify_track_id}>
-              <img src={track.albumUrl} alt={track.album} width={150} />
-              <h3>Song: {track.song} </h3>
-              <p>Artist: {track.artist} </p>
-              <p>Album: {track.album} </p>
+        <div className={styles.recommendationsContainer}>
+          <div className={styles.recommendationsHeader}>
+            <div className={styles.recommendationsTitle}>
+              <h2>Recommendations</h2>
+              <p>
+                {searchResult.length} songs · filtered to music you haven't
+                heard
+              </p>
             </div>
-          ))}
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className={styles.saveButton}
+            >
+              ≡ Save to Playlist
+            </button>
+          </div>
+
+          <div className={styles.trackGrid}>
+            {searchResult.map((track) => (
+              <div key={track.spotify_track_id} className={styles.trackCard}>
+                <img
+                  src={track.albumUrl}
+                  alt={track.album}
+                  className={styles.trackImage}
+                />
+                <div className={styles.trackInfo}>
+                  <h3>{track.song}</h3>
+                  <p>{track.artist}</p>
+                  <p className={styles.trackAlbum}>{track.album}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
