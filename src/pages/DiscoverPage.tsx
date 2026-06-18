@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import SaveToPlayListModal from '../components/SaveToPlaylistModal';
+import TrackCard from '../components/TrackCard';
 import styles from './DiscoverPage.module.css';
 
 interface TrackResult {
-  spotify_track_id: string;
+  spotifyTrackId: string;
   song: string;
   artist: string;
   album: string;
@@ -130,18 +131,7 @@ const DiscoverPage = () => {
 
           <div className={styles.trackGrid}>
             {searchResult.map((track) => (
-              <div key={track.spotify_track_id} className={styles.trackCard}>
-                <img
-                  src={track.albumUrl}
-                  alt={track.album}
-                  className={styles.trackImage}
-                />
-                <div className={styles.trackInfo}>
-                  <h3>{track.song}</h3>
-                  <p>{track.artist}</p>
-                  <p className={styles.trackAlbum}>{track.album}</p>
-                </div>
-              </div>
+              <TrackCard key={track.spotifyTrackId} {...track} />
             ))}
           </div>
         </div>

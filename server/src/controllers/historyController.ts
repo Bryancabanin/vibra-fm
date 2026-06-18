@@ -3,11 +3,16 @@ import {
   sendServerError,
   sendUnauthorizedRequest,
 } from '../utils/responseHelpers';
-import { getSessions, getSessionTracks } from '../services/historyServices';
+import {
+  getSessions,
+  getSessionTracks,
+  getSessionInfo,
+} from '../services/historyServices';
 
 type HistoryController = {
   handleHistorySession: RequestHandler;
   handleHistorySessionTracks: RequestHandler;
+  handleHistorySessionInfo: RequestHandler;
 };
 
 const historyController: HistoryController = {
@@ -40,6 +45,22 @@ const historyController: HistoryController = {
     } catch (error) {
       console.error('Failed getting tracks for specific session', error);
       sendServerError(res, 'Failed getting tracks for specific session');
+    }
+  },
+  handleHistorySessionInfo: async (req: Request, res: Response) => {
+    const sessionId = req.params.sessionId as string;
+
+    if (!req.user) {
+      console.error('Authentication failed');
+      sendUnauthorizedRequest(res, 'Authentication failed');
+      return;
+    }
+    try {
+      const sessionInfoResult = await getSessionInfo(req.user, sessionId);
+      res.json(sessionInfoResult);
+    } catch (error) {
+      console.error('Failed getting session info', error);
+      sendServerError(res, 'Failed getting session info');
     }
   },
 };
