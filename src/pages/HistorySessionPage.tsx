@@ -1,14 +1,22 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from 'react-router';
 import SaveToPlayListModal from '../components/SaveToPlaylistModal';
+import TrackCard from '../components/TrackCard';
 import styles from './HistorySessionPage.module.css';
 
+interface SessionInfo {
+  id: string;
+  seedSong: string;
+  seedArtist: string;
+  createdAt: Date;
+}
+
 interface HistorySessionPageResult {
-  spotify_track_id: string;
+  spotifyTrackId: string;
   song: string;
   artist: string;
   album: string;
-  album_url: string;
+  albumUrl: string;
 }
 
 const HistorySessionPage = () => {
@@ -17,6 +25,8 @@ const HistorySessionPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [sessionInfo, setSessionInfo] = useState<SessionInfo | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTracks = async () => {
@@ -24,11 +34,16 @@ const HistorySessionPage = () => {
       setError('');
       // make API to get all tracks for specific session
       try {
-        const res = await fetch(`/api/history/${sessionId}`, {
-          credentials: 'include',
-        });
-        const sessionTracks = await res.json();
+        const [tracksRes, infoRes] = await Promise.all([
+          fetch(`/api/history/${sessionId}`, { credentials: 'include' }),
+          fetch(`/api/history/${sessionId}/info`, { credentials: 'include' }),
+        ]);
+
+        const sessionTracks = await tracksRes.json();
+        const info = await infoRes.json();
+
         setTracks(sessionTracks);
+        setSessionInfo(info);
       } catch (error) {
         console.error('Failed fetching songs for session', error);
         setError('Failed fetching songs for session');
@@ -43,25 +58,60 @@ const HistorySessionPage = () => {
 
   return (
     <div>
-      <button>Back to history</button>
-      <div>
-        <h3>History Session Page</h3>
-      </div>
+      <button
+        onClick={() => navigate('/history')}
+        className={styles.backButton}
+      >
+        ← Back to history
+      </button>
+
+      {!loading && (
+        <div className={styles.sessionContainer}>
+          {sessionInfo && (
+            <div>
+              <h3>
+                {sessionInfo.seedSong} — {sessionInfo.seedArtist}{' '}
+              </h3>
+              <p>
+                {new Date(sessionInfo.createdAt).toLocaleDateString('en-US', {
+                  month: 'long',
+                  day: 'numeric',
+                  year: 'numeric',
+                })}{' '}
+                · {tracks.length} songs
+              </p>
+            </div>
+          )}
+
+          {tracks.length > 0 && (
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className={styles.saveButton}
+            >
+              ≡ Save to Playlist
+            </button>
+          )}
+        </div>
+      )}
+
       {error && <p>{error}</p>}
       {loading && <p>Loading...</p>}
 
-      {!loading &&
-        tracks.map((track) => (
-          <div key={track.spotify_track_id}>
-            <img src={track.album_url} alt={track.album} width={150} />
-            <h3>Song: {track.song} </h3>
-            <p>Artist: {track.artist} </p>
-            <p>Album: {track.album} </p>
+      {!loading && (
+        <>
+          <div className={styles.recommendedTracksContainer}>
+            <h3>Recommended Tracks </h3>
+            <p>{tracks.length} songs</p>
           </div>
-        ))}
 
-      {tracks.length > 0 && (
-        <button onClick={() => setIsModalOpen(true)}>Save to Playlist</button>
+          <div className={styles.recommendationsContainer}>
+            <div className={styles.trackGrid}>
+              {tracks.map((track) => (
+                <TrackCard key={track.spotifyTrackId} {...track} />
+              ))}
+            </div>
+          </div>
+        </>
       )}
 
       <SaveToPlayListModal
