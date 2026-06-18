@@ -52,7 +52,7 @@ const recommendationController: RecommendationController = {
         )
         .map((item) => item.value); // full TrackResult objects
 
-      const ids = tracks.map((track) => track.spotify_track_id);
+      const ids = tracks.map((track) => track.spotifyTrackId);
 
       const filterIds = await filterTracks(ids, req.user);
 
@@ -60,7 +60,7 @@ const recommendationController: RecommendationController = {
       const finalTracks = tracks.filter((track) =>
         filterIds.some(
           (filteredItem) =>
-            filteredItem.spotify_track_id === track.spotify_track_id,
+            filteredItem.spotifyTrackId === track.spotifyTrackId,
         ),
       );
 

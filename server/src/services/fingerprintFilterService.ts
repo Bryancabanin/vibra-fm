@@ -6,7 +6,7 @@ export const filterTracks = async (
   user: Express.User,
 ) => {
   const sqlQuery = `
-    SELECT unnest as spotify_track_id
+    SELECT unnest as "spotifyTrackId"
     FROM UNNEST($1::text[]) AS unnest
     WHERE unnest NOT IN (
       SELECT spotify_track_id 

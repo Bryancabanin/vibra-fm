@@ -16,7 +16,7 @@ type PlaylistController = {
 
 const playlistController: PlaylistController = {
   handleSaveToPlaylist: async (req: Request, res: Response) => {
-    const { session_id, playlistName } = req.body;
+    const { sessionId, playlistName } = req.body;
 
     // Authenticate if user is logged in.
     if (!req.user) {
@@ -25,7 +25,7 @@ const playlistController: PlaylistController = {
       return;
     }
 
-    if (!session_id || !playlistName) {
+    if (!sessionId || !playlistName) {
       console.error('Missing session id or playlist name');
       sendBadRequest(res, 'Session id and playlist name is required');
       return;
@@ -33,14 +33,14 @@ const playlistController: PlaylistController = {
 
     try {
       // get the songs in the specific session
-      const tracks = await getSessionTracks(req.user, session_id);
+      const tracks = await getSessionTracks(req.user, sessionId);
 
       if (!tracks) {
         sendServerError(res, 'Failed to get session tracks');
         return;
       }
       // extract spotify track ids
-      const spotifyTrackIds = tracks.map((track) => track.spotify_track_id);
+      const spotifyTrackIds = tracks.map((track) => track.spotifyTrackId);
       // create playlist
       const playlistResult = await createPlaylist(req.user, playlistName);
 

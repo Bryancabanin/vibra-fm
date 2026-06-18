@@ -4,9 +4,9 @@ import styles from './HistoryPage.module.css';
 
 interface HistoryPageResult {
   id: string;
-  seed_song: string;
-  seed_artist: string;
-  created_at: Date;
+  seedSong: string;
+  seedArtist: string;
+  createdAt: Date;
 }
 
 const HistoryPage = () => {
@@ -55,10 +55,10 @@ const HistoryPage = () => {
           >
             <div>
               <h3>
-                {element.seed_song} — {element.seed_artist}
+                {element.seedSong} — {element.seedArtist}
               </h3>
               <p>
-                {new Date(element.created_at).toLocaleString('en-US', {
+                {new Date(element.createdAt).toLocaleString('en-US', {
                   month: 'long',
                   day: 'numeric',
                   year: 'numeric',

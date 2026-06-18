@@ -41,7 +41,7 @@ export const saveSessionInfo = async (
       );
       params.push(
         sessionId,
-        value.spotify_track_id,
+        value.spotifyTrackId,
         value.song,
         value.artist,
         value.album,

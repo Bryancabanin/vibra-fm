@@ -42,7 +42,7 @@ const SaveToPlayListModal = ({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          session_id: sessionId,
+          sessionId,
           playlistName,
         }),
       });

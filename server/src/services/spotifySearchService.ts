@@ -1,7 +1,7 @@
 import { refreshIfNeeded } from './tokenRefresh.ts';
 
 export interface TrackResult {
-  spotify_track_id: string;
+  spotifyTrackId: string;
   song: string;
   artist: string;
   album: string;
@@ -42,7 +42,7 @@ export const searchTrackId = async (
     // Changing since we are missing artist, song, album name and album image
     // return spotifySong.tracks.items[0].id;
     return {
-      spotify_track_id: spotifySong.tracks.items[0].id,
+      spotifyTrackId: spotifySong.tracks.items[0].id,
       song: spotifySong.tracks.items[0].name,
       artist: spotifySong.tracks.items[0].artists[0].name,
       album: spotifySong.tracks.items[0].album.name,
