@@ -1,14 +1,17 @@
 import { useState } from 'react';
+import styles from './SaveToPlaylistModal.module.css';
 
 interface SaveToPlayListModalProps {
   sessionId: string;
   isOpen: boolean;
   onClose: () => void;
+  trackCount: number;
 }
 const SaveToPlayListModal = ({
   sessionId,
   isOpen,
   onClose,
+  trackCount,
 }: SaveToPlayListModalProps) => {
   const [playlistName, setPlaylistName] = useState('');
   const [spotifyUrl, setSpotifyUrl] = useState('');
@@ -62,27 +65,80 @@ const SaveToPlayListModal = ({
   }
 
   return (
-    <div>
-      <h2>Save to Playlist</h2>
+    <div className={styles.overlay}>
+      <div className={styles.modal}>
+        <div className={styles.headerRow}>
+          <h2>Save to playlist</h2>
+          <button
+            type='button'
+            onClick={onClose}
+            className={styles.closeButton}
+          >
+            x
+          </button>
+        </div>
 
-      <form onSubmit={handleSubmit}>
-        <label>
-          Playlist Name:
-          <input
-            type='text'
-            value={playlistName}
-            onChange={handlePlaylistNameInputChange}
-            placeholder='Playlist Name...'
-          />
-        </label>
-        <button type='submit'>Create Playlist</button>
-      </form>
-      <button onClick={onClose}>Cancel</button>
-      {error && <p>{error}</p>}
+        <hr className={styles.hrLine} />
 
-      {loading && <p>Loading...</p>}
+        <p>
+          Give your playlist a name and we'll create in your Spotify account
+          wiht all the recommended tracks.
+        </p>
 
-      {spotifyUrl && <a href={spotifyUrl}>Open in Spotify</a>}
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <label className={styles.label}>
+            <span>Playlist name</span>
+            <input
+              type='text'
+              value={playlistName}
+              onChange={handlePlaylistNameInputChange}
+              placeholder='e.g. Vibra — Let It Happen'
+            />
+          </label>
+          <div className={styles.trackCountRow}>
+            <span>♪</span>
+            <p>
+              <strong>{trackCount} songs</strong> will be added to this playlist
+            </p>
+          </div>
+
+          <hr className={`${styles.hrLine} ${styles.hrLineFooter}`} />
+
+          <div className={styles.footer}>
+            <button
+              type='button'
+              onClick={onClose}
+              className={`${styles.button} ${styles.cancelButton}`}
+            >
+              Cancel
+            </button>
+            <button
+              type='submit'
+              className={`${styles.button} ${styles.createButton}`}
+            >
+              Create Playlist
+            </button>
+          </div>
+        </form>
+
+        {error && <p>{error}</p>}
+
+        {loading && <p>Loading...</p>}
+
+        {spotifyUrl && (
+          <div className={styles.successRow}>
+            <span className={styles.successText}>✓ Playlist created</span>
+            <a
+              href={spotifyUrl}
+              target='_blank'
+              rel='noopener noreferrer'
+              className={styles.successLink}
+            >
+              Open in Spotify →
+            </a>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

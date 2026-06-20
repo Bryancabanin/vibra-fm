@@ -118,6 +118,7 @@ const HistorySessionPage = () => {
         sessionId={sessionId}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        trackCount={tracks.length}
       />
     </div>
   );

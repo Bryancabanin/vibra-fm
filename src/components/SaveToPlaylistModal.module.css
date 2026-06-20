@@ -1,0 +1,134 @@
+.overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: var(--color-surface);
+  padding: 32px;
+  border-radius: 5px;
+  width: 480px;
+  max-width: 90vw;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.modal p {
+  color: var(--color-text-primary);
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.hrLine {
+  border: 1px solid var(--color-border);
+  width: 100%;
+}
+
+.hrLineFooter {
+  margin: 4px 0;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.trackCountRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--color-background);
+  border-radius: 6px;
+  padding: 12px 16px;
+}
+
+.trackCountRow p {
+  margin: 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label input {
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+}
+
+.button {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cancelButton {
+  background-color: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+}
+
+.createButton {
+  background-color: var(--color-spotify);
+  border: none;
+  color: white;
+  font-weight: 600;
+}
+
+.closeButton {
+  background-color: var(--color-background);
+  border: none;
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--color-text-secondary);
+}
+.successRow {
+  margin-top: 16px;
+  background-color: #e3f8ec;
+  border-radius: 6px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.successText {
+  color: #1a7a4c;
+  font-size: 14px;
+}
+
+.successLink {
+  color: #1a7a4c;
+  font-weight: 600;
+  font-size: 14px;
+}
