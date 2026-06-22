@@ -22,6 +22,15 @@ const SaveToPlayListModal = ({
     setPlaylistName(e.target.value);
   };
 
+  // Resets local state, then tells the parent to close
+  const handleClose = () => {
+    setPlaylistName('');
+    setSpotifyUrl('');
+    setLoading(false);
+    setError('');
+    onClose();
+  };
+
   // handle submit
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -71,7 +80,7 @@ const SaveToPlayListModal = ({
           <h2>Save to playlist</h2>
           <button
             type='button'
-            onClick={onClose}
+            onClick={handleClose}
             className={styles.closeButton}
           >
             x
@@ -107,7 +116,7 @@ const SaveToPlayListModal = ({
           <div className={styles.footer}>
             <button
               type='button'
-              onClick={onClose}
+              onClick={handleClose}
               className={`${styles.button} ${styles.cancelButton}`}
             >
               Cancel
