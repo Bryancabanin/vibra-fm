@@ -103,12 +103,14 @@ const DiscoverPage = () => {
         </form>
       </div>
 
-      {error && <p>{error}</p>}
+      {error && <p className={styles.statusMessage}>{error}</p>}
 
-      {loading && <p>Loading...</p>}
+      {loading && <p className={styles.statusMessage}>Loading...</p>}
 
       {hasSearched && searchResult.length === 0 && (
-        <p>No results found. Try another search.</p>
+        <p className={styles.statusMessage}>
+          No results found. Try another search.
+        </p>
       )}
 
       {hasSearched && !loading && searchResult.length > 0 && (

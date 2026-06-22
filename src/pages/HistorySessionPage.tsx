@@ -94,8 +94,8 @@ const HistorySessionPage = () => {
         </div>
       )}
 
-      {error && <p>{error}</p>}
-      {loading && <p>Loading...</p>}
+      {error && <p className={styles.statusMessage}>{error}</p>}
+      {loading && <p className={styles.statusMessage}>Loading...</p>}
 
       {!loading && (
         <>

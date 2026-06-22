@@ -75,3 +75,10 @@
   width: 800px;
   margin: 0 auto 16px;
 }
+
+.statusMessage {
+  max-width: 800px;
+  margin: 16px auto;
+  font-family: var(--font-body);
+  color: var(--color-text-primary);
+}
