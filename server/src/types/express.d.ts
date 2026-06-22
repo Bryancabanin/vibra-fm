@@ -3,6 +3,7 @@ declare global {
     interface User {
       id: string;
       spotify_id: string;
+      display_name: string | null;
       access_token: string;
       refresh_token: string;
       token_expires: Date;

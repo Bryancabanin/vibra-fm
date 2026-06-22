@@ -6,7 +6,7 @@ import type { ReactNode } from 'react';
 interface AuthContextType {
   isLoading: boolean;
   isLoggedIn: boolean;
-  user: { spotify_id: string } | null;
+  user: { spotify_id: string; display_name: string | null } | null;
   logout: () => Promise<void>;
 }
 

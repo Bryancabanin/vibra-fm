@@ -54,7 +54,12 @@ const authController: AuthController = {
       sendUnauthorizedRequest(res, 'Authentication failed');
       return;
     }
-    return res.status(200).json({ spotify_id: req.user.spotify_id });
+    return res
+      .status(200)
+      .json({
+        spotify_id: req.user.spotify_id,
+        display_name: req.user.display_name,
+      });
   },
 };
 

@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router';
 import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
+import { User, LogOut } from 'lucide-react';
 import styles from './Navbar.module.css';
 
 const Navbar = () => {
@@ -39,12 +40,20 @@ const Navbar = () => {
             className={styles.userButton}
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
-            {user?.spotify_id} ▾
+            <span className={styles.avatar}>
+              <User size={14} />
+            </span>
+
+            <span className={styles.userName}>
+              {user?.display_name || user?.spotify_id}
+            </span>
+            <span>▾</span>
           </button>
 
           {isDropdownOpen && (
             <div className={styles.dropdownContainer}>
               <button className={styles.dropdownItem} onClick={logout}>
+                <LogOut size={16} />
                 Log out
               </button>
             </div>

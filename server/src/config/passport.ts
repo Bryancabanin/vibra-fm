@@ -43,12 +43,13 @@ passport.use(
 
       // Create sql to insert information into our database.
       // If it already exists then we need to use on conflict with spotify_id
-      const query = `INSERT INTO users (spotify_id, access_token, refresh_token, token_expires) VALUES ($1, $2, $3, $4) ON CONFLICT (spotify_id) DO UPDATE SET access_token = EXCLUDED.access_token , refresh_token =EXCLUDED.refresh_token , token_expires = EXCLUDED.token_expires RETURNING *`;
+      const query = `INSERT INTO users (spotify_id, display_name, access_token, refresh_token, token_expires) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (spotify_id) DO UPDATE SET display_name = EXCLUDED.display_name, access_token = EXCLUDED.access_token , refresh_token = EXCLUDED.refresh_token , token_expires = EXCLUDED.token_expires RETURNING *`;
 
       // Need to upsert the user into our database
       try {
         const result = await pool.query(query, [
           profile.id,
+          profile.displayName,
           accessToken,
           refreshToken,
           token_expires,
