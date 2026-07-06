@@ -11,11 +11,14 @@ export const buildFingerprint = async (user: Express.User) => {
   const access_token = await refreshIfNeeded(user);
   const trackIds = new Set<string>();
 
+  let apiCallCount = 0;
+
   // Liked songs GET /me/tracks
   try {
     let url = 'https://api.spotify.com/v1/me/tracks?limit=50';
 
     while (url) {
+      apiCallCount++;
       const result = await fetch(url, {
         method: 'GET',
         headers: {
@@ -43,6 +46,7 @@ export const buildFingerprint = async (user: Express.User) => {
   // Recently played has a hard cap of 50 tracks total — no pagination needed
   // Recently played
   try {
+    apiCallCount++;
     const result = await fetch(
       `https://api.spotify.com/v1/me/player/recently-played?limit=50`,
       {
@@ -75,6 +79,7 @@ export const buildFingerprint = async (user: Express.User) => {
       let url = `https://api.spotify.com/v1/me/top/tracks?time_range=${timeRange}&limit=50`;
 
       while (url && numberOfTracks < 200) {
+        apiCallCount++;
         // fetch, extract song id, increment counter, update url
         const result = await fetch(url, {
           method: 'GET',
@@ -108,6 +113,7 @@ export const buildFingerprint = async (user: Express.User) => {
     let url = `https://api.spotify.com/v1/me/playlists?limit=50`;
 
     while (url) {
+      apiCallCount++;
       const result = await fetch(url, {
         method: 'GET',
         headers: {
@@ -127,6 +133,7 @@ export const buildFingerprint = async (user: Express.User) => {
           let playlistUrl = `https://api.spotify.com/v1/playlists/${playlist.id}/items`;
 
           while (playlistUrl) {
+            apiCallCount++;
             const result = await fetch(playlistUrl, {
               method: 'GET',
               headers: {
@@ -150,6 +157,11 @@ export const buildFingerprint = async (user: Express.User) => {
   } catch (error) {
     console.error('Error fetching User Playlist', error);
   }
+  // logging API calls right before the early return check
+  console.log(
+    `[METRIC] Total Spotify API calls for fingerprint build: ${apiCallCount}`,
+  );
+  console.log(`[METRIC] Total unique tracks fingerprinted: ${trackIds.size}`);
 
   if (trackIds.size === 0) {
     console.log('Track id Set is empty');
