@@ -1,13 +1,16 @@
-import { NextFunction, Request, RequestHandler, Response } from 'express';
+import { Request, RequestHandler, Response } from 'express';
 import {
   sendUnauthorizedRequest,
   sendBadRequest,
   sendServerError,
-} from '../utils/responseHelpers';
-import { recommendSongs } from '../services/songRecommendationService';
-import { filterTracks } from '../services/fingerprintFilterService';
-import { searchTrackId, TrackResult } from '../services/spotifySearchService';
-import { saveSessionInfo } from '../services/recommendationSessionService';
+} from '../utils/responseHelpers.js';
+import { recommendSongs } from '../services/songRecommendationService.js';
+import { filterTracks } from '../services/fingerprintFilterService.js';
+import {
+  searchTrackId,
+  TrackResult,
+} from '../services/spotifySearchService.js';
+import { saveSessionInfo } from '../services/recommendationSessionService.js';
 
 type RecommendationController = {
   handleRecommendation: RequestHandler;

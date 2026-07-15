@@ -2,12 +2,12 @@ import { Request, RequestHandler, Response } from 'express';
 import {
   sendServerError,
   sendUnauthorizedRequest,
-} from '../utils/responseHelpers';
+} from '../utils/responseHelpers.js';
 import {
   getSessions,
   getSessionTracks,
   getSessionInfo,
-} from '../services/historyServices';
+} from '../services/historyServices.js';
 
 type HistoryController = {
   handleHistorySession: RequestHandler;

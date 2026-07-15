@@ -1,5 +1,5 @@
 import { pool } from '../config/db.ts';
-import { TrackResult } from '../services/spotifySearchService';
+import { TrackResult } from '../services/spotifySearchService.js';
 
 export const saveSessionInfo = async (
   user: Express.User,

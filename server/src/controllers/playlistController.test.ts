@@ -1,8 +1,8 @@
 import { describe, it, expect, vi } from 'vitest';
-import playlistController from './playlistController';
-import * as responseHelpers from '../utils/responseHelpers';
-import * as historyServices from '../services/historyServices';
-import * as playlistService from '../services/playlistService';
+import playlistController from './playlistController.js';
+import * as responseHelpers from '../utils/responseHelpers.js';
+import * as historyServices from '../services/historyServices.js';
+import * as playlistService from '../services/playlistService.js';
 import { Request, Response } from 'express';
 
 vi.mock('../utils/responseHelpers');

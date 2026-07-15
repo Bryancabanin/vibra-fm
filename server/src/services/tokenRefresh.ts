@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { pool } from '../config/db';
+import { pool } from '../config/db.js';
 
 // Before making any API call check if the token is close to expiring.
 // Need to set up a conditional when its close to expire we use refresh_token

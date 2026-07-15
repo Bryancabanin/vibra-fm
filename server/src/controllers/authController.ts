@@ -1,6 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { buildFingerprint } from '../services/fingerprint';
-import { sendUnauthorizedRequest } from '../utils/responseHelpers';
+import { buildFingerprint } from '../services/fingerprint.js';
+import { sendUnauthorizedRequest } from '../utils/responseHelpers.js';
 
 type AuthController = {
   handleCallback: RequestHandler;

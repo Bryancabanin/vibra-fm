@@ -3,7 +3,7 @@ import {
   sendBadRequest,
   sendServerError,
   sendUnauthorizedRequest,
-} from './responseHelpers';
+} from './responseHelpers.js';
 import { Response } from 'express';
 
 describe('sendBadRequest', () => {

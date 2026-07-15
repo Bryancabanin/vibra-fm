@@ -1,14 +1,14 @@
-import { NextFunction, Request, RequestHandler, Response } from 'express';
+import { Request, RequestHandler, Response } from 'express';
 import {
   sendUnauthorizedRequest,
   sendBadRequest,
   sendServerError,
-} from '../utils/responseHelpers';
+} from '../utils/responseHelpers.js';
 import {
   createPlaylist,
   addTracksToPlaylist,
-} from '../services/playlistService';
-import { getSessionTracks } from '../services/historyServices';
+} from '../services/playlistService.js';
+import { getSessionTracks } from '../services/historyServices.js';
 
 type PlaylistController = {
   handleSaveToPlaylist: RequestHandler;
