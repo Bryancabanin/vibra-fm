@@ -1,0 +1,24 @@
+node_modules
+
+# Environment
+.env
+.env*
+
+# Git
+.git
+.gitignore
+
+# Editor
+.vscode
+.idea
+.DS_Store
+
+# Tests (not needed at runtime in the container)
+tests
+vitest.config.ts
+
+# Build output (will be generated inside the container instead)
+dist
+
+# Misc
+*.log
