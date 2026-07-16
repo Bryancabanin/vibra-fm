@@ -46,7 +46,7 @@ const authController: AuthController = {
           console.error('Error building fingerprint', err);
         });
 
-        res.redirect('http://127.0.0.1:5173');
+        res.redirect(process.env.CORS_ORIGIN!);
       });
     });
   },
@@ -56,7 +56,7 @@ const authController: AuthController = {
     req.logout((err) => {
       // ?
       if (err) return next(err);
-      res.redirect('/');
+      res.redirect(process.env.CORS_ORIGIN!);
     });
   },
 
