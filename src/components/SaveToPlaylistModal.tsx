@@ -8,6 +8,11 @@ interface SaveToPlayListModalProps {
   onClose: () => void;
   trackCount: number;
 }
+
+interface CreatePlaylistResponse {
+  url: string;
+}
+
 const SaveToPlayListModal = ({
   sessionId,
   isOpen,
@@ -19,7 +24,9 @@ const SaveToPlayListModal = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handlePlaylistNameInputChange = (e) => {
+  const handlePlaylistNameInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     setPlaylistName(e.target.value);
   };
 
@@ -33,7 +40,7 @@ const SaveToPlayListModal = ({
   };
 
   // handle submit
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!playlistName) {
@@ -62,8 +69,8 @@ const SaveToPlayListModal = ({
         }),
       });
 
-      const data = await res.json();
-      setSpotifyUrl(data);
+      const data = (await res.json()) as CreatePlaylistResponse;
+      setSpotifyUrl(data.url);
     } catch (error) {
       console.error('Error creating playlist', error);
       setError('Error creating playlist');
