@@ -4,10 +4,15 @@ import { API_URL } from '../config.ts';
 
 // Define shape of context
 
+interface User {
+  spotify_id: string;
+  display_name: string | null;
+}
+
 interface AuthContextType {
   isLoading: boolean;
   isLoggedIn: boolean;
-  user: { spotify_id: string; display_name: string | null } | null;
+  user: User | null;
   logout: () => Promise<void>;
 }
 
@@ -19,7 +24,7 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState<{ spotify_id: string } | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     // checks if user is logged in when app loads
@@ -28,7 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     fetch(`${API_URL}/api/auth/me`, { credentials: 'include' })
       .then((res) => {
         if (res.ok) {
-          return res.json();
+          return res.json() as Promise<User>;
         }
       })
       .then((data) => {
