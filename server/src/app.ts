@@ -11,9 +11,13 @@ import './config/passport.ts';
 
 const app = express();
 
+if (!process.env.CORS_ORIGIN) {
+  throw new Error('CORS_ORIGIN is required');
+}
+
 app.use(
   cors({
-    origin: 'http://127.0.0.1:5173',
+    origin: process.env.CORS_ORIGIN,
     methods: ['GET', 'POST', 'DELETE', 'PUT'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
@@ -36,7 +40,7 @@ app.use(
     cookie: {
       httpOnly: true, // JavaScript can never access the cookie
       sameSite: 'lax', // blocks cross-site requests (CSRF protection),
-      secure: false, // set to true in production (requires HTTPS)
+      secure: process.env.NODE_ENV === 'production', // true in production (requires HTTPS)
       maxAge: 1000 * 60 * 60 * 24, // 24 hours in milliseconds
     },
   }),
