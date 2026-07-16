@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express, { NextFunction, Request, Response } from 'express';
 import authRoutes from './routes/authRoutes.ts';
 import recommendationRoutes from './routes/recommendationRoutes.ts';
@@ -7,7 +8,6 @@ import passport from 'passport';
 import session from 'express-session';
 import cors from 'cors';
 import './config/passport.ts';
-import 'dotenv/config';
 
 const app = express();
 
