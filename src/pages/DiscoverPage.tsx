@@ -12,6 +12,11 @@ interface TrackResult {
   albumUrl: string;
 }
 
+interface RecommendationsResponse {
+  finalTracks: TrackResult[];
+  sessionId: string;
+}
+
 const DiscoverPage = () => {
   // Need state
   const [artist, setArtist] = useState('');
@@ -24,16 +29,16 @@ const DiscoverPage = () => {
   const [error, setError] = useState('');
 
   // handler for on change for artist
-  const handleArtistInputChange = (e) => {
+  const handleArtistInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setArtist(e.target.value);
   };
 
-  const handleSongInputChange = (e) => {
+  const handleSongInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSong(e.target.value);
   };
 
   // handler for submit
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!artist.trim() || !song.trim()) {
@@ -64,7 +69,7 @@ const DiscoverPage = () => {
         }),
       });
 
-      const data = await res.json();
+      const data = (await res.json()) as RecommendationsResponse;
       setSearchResult(data.finalTracks);
       setSessionId(data.sessionId);
       setHasSearched(true);
@@ -146,6 +151,7 @@ const DiscoverPage = () => {
         sessionId={sessionId}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        trackCount={searchResult.length}
       />
     </div>
   );
