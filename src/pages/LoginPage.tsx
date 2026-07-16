@@ -1,9 +1,10 @@
 import styles from './LoginPage.module.css';
+import { API_URL } from '../config.ts';
 
 const LoginPage = () => {
   // Create handle login
   const handleSpotifyLogin = () => {
-    window.location.href = 'http://127.0.0.1:8080/api/auth/spotify';
+    window.location.href = `${API_URL}/api/auth/spotify`;
   };
 
   return (

@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
+import { API_URL } from '../config.ts';
 
 // Define shape of context
 
@@ -23,7 +24,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     // checks if user is logged in when app loads
 
-    fetch('/api/auth/me', { credentials: 'include' })
+    // fetch('/api/auth/me', { credentials: 'include' })
+    fetch(`${API_URL}/api/auth/me`, { credentials: 'include' })
       .then((res) => {
         if (res.ok) {
           return res.json();
@@ -44,7 +46,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     try {
-      await fetch('/api/auth/logout', { credentials: 'include' });
+      // await fetch('/api/auth/logout', { credentials: 'include' });
+      await fetch(`${API_URL}/api/auth/logout`, { credentials: 'include' });
       setUser(null);
       setIsLoggedIn(false);
     } catch (error) {

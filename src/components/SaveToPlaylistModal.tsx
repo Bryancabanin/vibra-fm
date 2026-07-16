@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styles from './SaveToPlaylistModal.module.css';
+import { API_URL } from '../config.ts';
 
 interface SaveToPlayListModalProps {
   sessionId: string;
@@ -48,8 +49,10 @@ const SaveToPlayListModal = ({
     setError('');
 
     try {
-      const res = await fetch('/api/create-playlist', {
+      // const res = await fetch('/api/create-playlist', {
+      const res = await fetch(`${API_URL}/api/create-playlist`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },

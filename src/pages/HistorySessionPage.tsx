@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router';
 import SaveToPlayListModal from '../components/SaveToPlaylistModal';
 import TrackCard from '../components/TrackCard';
 import styles from './HistorySessionPage.module.css';
+import { API_URL } from '../config.ts';
 
 interface SessionInfo {
   id: string;
@@ -35,8 +36,14 @@ const HistorySessionPage = () => {
       // make API to get all tracks for specific session
       try {
         const [tracksRes, infoRes] = await Promise.all([
-          fetch(`/api/history/${sessionId}`, { credentials: 'include' }),
-          fetch(`/api/history/${sessionId}/info`, { credentials: 'include' }),
+          // fetch(`/api/history/${sessionId}`, { credentials: 'include' }),
+          // fetch(`/api/history/${sessionId}/info`, { credentials: 'include' }),
+          fetch(`${API_URL}/api/history/${sessionId}`, {
+            credentials: 'include',
+          }),
+          fetch(`${API_URL}/api/history/${sessionId}/info`, {
+            credentials: 'include',
+          }),
         ]);
 
         const sessionTracks = await tracksRes.json();

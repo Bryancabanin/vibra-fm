@@ -2,6 +2,7 @@ import { useState } from 'react';
 import SaveToPlayListModal from '../components/SaveToPlaylistModal';
 import TrackCard from '../components/TrackCard';
 import styles from './DiscoverPage.module.css';
+import { API_URL } from '../config.ts';
 
 interface TrackResult {
   spotifyTrackId: string;
@@ -50,8 +51,10 @@ const DiscoverPage = () => {
     setError('');
 
     try {
-      const res = await fetch('/api/recommendations', {
+      // const res = await fetch('/api/recommendations', {
+      const res = await fetch(`${API_URL}/api/recommendations`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },

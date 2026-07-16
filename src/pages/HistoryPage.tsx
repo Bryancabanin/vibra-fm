@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import styles from './HistoryPage.module.css';
+import { API_URL } from '../config.ts';
 
 interface HistoryPageResult {
   id: string;
@@ -25,7 +26,10 @@ const HistoryPage = () => {
 
       // API call to fetch all playlists
       try {
-        const res = await fetch('/api/history', { credentials: 'include' });
+        // const res = await fetch('/api/history', { credentials: 'include' });
+        const res = await fetch(`${API_URL}/api/history`, {
+          credentials: 'include',
+        });
         const playlistData = await res.json();
         setSessions(playlistData);
       } catch (error) {
