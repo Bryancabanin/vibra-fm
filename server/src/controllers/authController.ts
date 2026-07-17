@@ -49,14 +49,21 @@ const authController: AuthController = {
           console.error('Error building fingerprint', err);
         });
 
-        res.cookie('test_cookie', 'hello123', {
-          httpOnly: false,
-          secure: true,
-          sameSite: 'lax',
-        });
+        console.log('req.sessionID:', req.sessionID);
+        console.log('req.session:', req.session);
 
-        console.log('About to redirect to:', process.env.CORS_ORIGIN);
-        res.redirect(process.env.CORS_ORIGIN!);
+        req.session.save((err) => {
+          console.log('session.save callback fired, err:', err);
+
+          res.cookie('test_cookie', 'hello123', {
+            httpOnly: false,
+            secure: true,
+            sameSite: 'lax',
+          });
+
+          console.log('About to redirect to:', process.env.CORS_ORIGIN);
+          res.redirect(process.env.CORS_ORIGIN!);
+        });
       });
     });
   },
