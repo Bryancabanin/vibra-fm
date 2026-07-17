@@ -11,6 +11,7 @@ type AuthController = {
 const authController: AuthController = {
   // handleCallback is not async since we do not need to wait for it to finish saving everyhting into our database.
   handleCallback: (req: Request, res: Response) => {
+    console.log('Callback hit, req.user:', req.user);
     if (!req.user) {
       console.error('Authentication failed');
       sendUnauthorizedRequest(res, 'Authentication failed');
@@ -21,11 +22,13 @@ const authController: AuthController = {
 
     // regenerate session ID after login to prevent session fixation
     req.session.regenerate((err) => {
+      console.log('session.regenerate callback fired, err:', err); // test
       if (err) {
         console.error('Session regeneration error', err);
       }
 
       req.login(user, (err) => {
+        console.log('req.login callback fired, err:', err);
         if (err) {
           console.error('Login error', err);
         }
@@ -46,6 +49,7 @@ const authController: AuthController = {
           console.error('Error building fingerprint', err);
         });
 
+        console.log('About to redirect to:', process.env.CORS_ORIGIN);
         res.redirect(process.env.CORS_ORIGIN!);
       });
     });
