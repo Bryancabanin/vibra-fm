@@ -11,6 +11,8 @@ import './config/passport.ts';
 
 const app = express();
 
+app.set('trust proxy', 1);
+
 if (!process.env.CORS_ORIGIN) {
   throw new Error('CORS_ORIGIN is required');
 }
