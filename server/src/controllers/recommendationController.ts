@@ -11,9 +11,14 @@ import {
   TrackResult,
 } from '../services/spotifySearchService.js';
 import { saveSessionInfo } from '../services/recommendationSessionService.js';
+import {
+  getSearchUsage,
+  DAILY_SEARCH_LIMIT,
+} from '../services/searchUsageService.js';
 
 type RecommendationController = {
   handleRecommendation: RequestHandler;
+  handleGetUsage: RequestHandler;
 };
 
 const recommendationController: RecommendationController = {
@@ -126,6 +131,24 @@ const recommendationController: RecommendationController = {
     } catch (error) {
       console.error('Failed to get recommendations', error);
       sendServerError(res, 'Failed to get recommendations');
+    }
+  },
+
+  handleGetUsage: async (req: Request, res: Response) => {
+    if (!req.user) {
+      console.error('Authentication failed');
+      sendUnauthorizedRequest(res, 'Authentication failed');
+      return;
+    }
+
+    try {
+      const searchCount = await getSearchUsage(req.user);
+      const limit = DAILY_SEARCH_LIMIT;
+      const remaining = limit - searchCount;
+      res.json({ searchCount, limit, remaining });
+    } catch (error) {
+      console.error('Failed to get user usage', error);
+      sendServerError(res, 'Failed to get user usage');
     }
   },
 };
