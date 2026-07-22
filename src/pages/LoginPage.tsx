@@ -3,7 +3,7 @@ import { API_URL } from '../config.ts';
 import { useState } from 'react';
 
 const LoginPage = () => {
-  const [hasLoginError, setHasLoginError] = useState(() => {
+  const [hasLoginError] = useState(() => {
     const params = new URLSearchParams(window.location.search);
     const errorPresent = params.get('login_error') === 'true';
 
