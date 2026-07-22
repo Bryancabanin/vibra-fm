@@ -57,7 +57,7 @@ const playlistController: PlaylistController = {
         spotifyTrackIds,
       );
 
-      res.json(playlistResult.external_urls);
+      res.json({ url: playlistResult.external_urls });
     } catch (error) {
       console.error(
         'Failed to get create playlist or adding songs to playlist',
