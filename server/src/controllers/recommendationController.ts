@@ -13,6 +13,7 @@ import {
 import { saveSessionInfo } from '../services/recommendationSessionService.js';
 import {
   getSearchUsage,
+  decrementSearchUsage,
   DAILY_SEARCH_LIMIT,
 } from '../services/searchUsageService.js';
 
@@ -130,6 +131,15 @@ const recommendationController: RecommendationController = {
       res.json({ sessionId, finalTracks });
     } catch (error) {
       console.error('Failed to get recommendations', error);
+
+      if (req.user) {
+        await decrementSearchUsage(req.user).catch((refundError) => {
+          console.error(
+            'Failed to refund search usage after failure',
+            refundError,
+          );
+        });
+      }
       sendServerError(res, 'Failed to get recommendations');
     }
   },

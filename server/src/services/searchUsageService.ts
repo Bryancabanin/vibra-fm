@@ -23,6 +23,23 @@ export const incrementSearchUsage = async (
   }
 };
 
+export const decrementSearchUsage = async (
+  user: Express.User,
+): Promise<void> => {
+  const query = `
+    UPDATE daily_search_usage
+    SET search_count = GREATEST(search_count - 1, 0)
+    WHERE user_id = $1 AND usage_date = CURRENT_DATE;
+  `;
+
+  try {
+    await pool.query(query, [user.id]);
+  } catch (error) {
+    console.error('Error decrementing search usage', error);
+    throw error;
+  }
+};
+
 export const getSearchUsage = async (user: Express.User): Promise<number> => {
   const query = `
     SELECT search_count FROM daily_search_usage
