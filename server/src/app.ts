@@ -7,6 +7,7 @@ import playlistRoutes from './routes/playlistRoutes.ts';
 import passport from 'passport';
 import session from 'express-session';
 import cors from 'cors';
+import { AppError } from './utils/AppError.js';
 import './config/passport.ts';
 
 const app = express();
@@ -70,15 +71,14 @@ const errorHandler = (
   res: Response,
   next: NextFunction,
 ) => {
-  const defaultErr = {
-    log: 'Express error handler caught unknown middleware error',
-    status: 500,
-    message: { err: 'An error occured' },
-  };
+  console.error('Unhandled error:', err);
 
-  const errorObj = Object.assign({}, defaultErr, err);
+  if (err instanceof AppError) {
+    res.status(err.status).json({ error: err.message });
+    return;
+  }
 
-  res.status(errorObj.status).json(errorObj.message);
+  res.status(500).json({ error: 'Something went wrong. Please try again.' });
 };
 
 app.use(errorHandler);

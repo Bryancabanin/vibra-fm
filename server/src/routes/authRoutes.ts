@@ -24,6 +24,7 @@ router.get(
   '/auth/spotify/callback',
   passport.authenticate('spotify', { failureRedirect: '/' }),
   authController.handleCallback,
+  authController.handleCallbackError,
 );
 
 // Log out

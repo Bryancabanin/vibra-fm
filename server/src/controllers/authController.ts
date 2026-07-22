@@ -1,4 +1,10 @@
-import { NextFunction, Request, RequestHandler, Response } from 'express';
+import {
+  NextFunction,
+  Request,
+  RequestHandler,
+  Response,
+  ErrorRequestHandler,
+} from 'express';
 import { buildFingerprint } from '../services/fingerprint.js';
 import { sendUnauthorizedRequest } from '../utils/responseHelpers.js';
 
@@ -6,6 +12,7 @@ type AuthController = {
   handleCallback: RequestHandler;
   handleLogout: RequestHandler;
   getMe: RequestHandler;
+  handleCallbackError: ErrorRequestHandler;
 };
 
 const authController: AuthController = {
@@ -75,6 +82,11 @@ const authController: AuthController = {
       spotify_id: req.user.spotify_id,
       display_name: req.user.display_name,
     });
+  },
+
+  handleCallbackError: (err, req, res, next) => {
+    console.error('Spotify login error:', err);
+    res.redirect(`${process.env.CORS_ORIGIN}?login_error=true`);
   },
 };
 

@@ -1,7 +1,18 @@
 import styles from './LoginPage.module.css';
 import { API_URL } from '../config.ts';
+import { useState } from 'react';
 
 const LoginPage = () => {
+  const [hasLoginError, setHasLoginError] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    const errorPresent = params.get('login_error') === 'true';
+
+    if (errorPresent) {
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+
+    return errorPresent;
+  });
   // Create handle login
   const handleSpotifyLogin = () => {
     window.location.href = `${API_URL}/api/auth/spotify`;
@@ -16,6 +27,9 @@ const LoginPage = () => {
           you already know.
         </p>
         <hr className={styles.hrLine} />
+        {hasLoginError && (
+          <p>Something went wrong logging in. Please try again.</p>
+        )}
         <button onClick={handleSpotifyLogin}> Continue with Spotify</button>
 
         <p className={styles.disclaimer}>
