@@ -15,6 +15,8 @@ interface TrackResult {
 interface RecommendationsResponse {
   finalTracks: TrackResult[];
   sessionId: string;
+  totalCandidates: number;
+  filteredOut: number;
 }
 
 const DiscoverPage = () => {
@@ -27,6 +29,8 @@ const DiscoverPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [totalCandidates, setTotalCandidates] = useState(0);
+  const [filteredOut, setFilteredOut] = useState(0);
 
   // handler for on change for artist
   const handleArtistInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,6 +86,8 @@ const DiscoverPage = () => {
       const data = (await res.json()) as RecommendationsResponse;
       setSearchResult(data.finalTracks);
       setSessionId(data.sessionId);
+      setTotalCandidates(data.totalCandidates);
+      setFilteredOut(data.filteredOut);
       setHasSearched(true);
     } catch (error) {
       console.error('Error fetching song', error);
@@ -137,8 +143,9 @@ const DiscoverPage = () => {
             <div className={styles.recommendationsTitle}>
               <h2>Recommendations</h2>
               <p>
-                {searchResult.length} songs · filtered to music you haven't
-                heard
+                {filteredOut > 0
+                  ? `${totalCandidates} similar songs found — ${filteredOut} were already in your library, here are ${searchResult.length} new ones.`
+                  : `${searchResult.length} songs · filtered to music you haven't heard`}
               </p>
             </div>
             <button

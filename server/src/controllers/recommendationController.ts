@@ -48,6 +48,7 @@ const recommendationController: RecommendationController = {
       // call recommendSongsa
       const recommendedSongsResult = await recommendSongs(artist, song);
 
+      // console.log('GPT candidates:', recommendedSongsResult.length);
       // // collecting metrics
       // // 1. Time the SEQUENTIAL version
       // const seqStart = Date.now();
@@ -84,6 +85,8 @@ const recommendationController: RecommendationController = {
         )
         .map((item) => item.value); // full TrackResult objects
 
+      // console.log('Matched on Spotify:', tracks.length);
+
       // Metric logging
       // console.log(
       //   `[METRIC] GPT recommendations: ${recommendedSongsResult.length}`,
@@ -105,6 +108,8 @@ const recommendationController: RecommendationController = {
         ),
       );
 
+      // console.log('After fingerprint filter:', finalTracks.length);
+
       // Metric logging
       // console.log(
       //   `[METRIC] Tracks before fingerprint filter: ${tracks.length}`,
@@ -121,6 +126,9 @@ const recommendationController: RecommendationController = {
 
       // insert recommendation_session and recommendation_track and we get sessionId out of it.
       // We use this sessionId for our frontend in order to save the songs from the session into a playlist which requires sessionId
+      const totalCandidates = tracks.length;
+      const filteredOut = tracks.length - finalTracks.length;
+
       const sessionId = await saveSessionInfo(
         req.user,
         artist,
@@ -128,7 +136,7 @@ const recommendationController: RecommendationController = {
         finalTracks,
       );
 
-      res.json({ sessionId, finalTracks });
+      res.json({ sessionId, finalTracks, totalCandidates, filteredOut });
     } catch (error) {
       console.error('Failed to get recommendations', error);
 
