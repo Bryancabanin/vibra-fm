@@ -158,10 +158,10 @@ export const buildFingerprint = async (user: Express.User) => {
     console.error('Error fetching User Playlist', error);
   }
   // logging API calls right before the early return check
-  console.log(
-    `[METRIC] Total Spotify API calls for fingerprint build: ${apiCallCount}`,
-  );
-  console.log(`[METRIC] Total unique tracks fingerprinted: ${trackIds.size}`);
+  // console.log(
+  //   `[METRIC] Total Spotify API calls for fingerprint build: ${apiCallCount}`,
+  // );
+  // console.log(`[METRIC] Total unique tracks fingerprinted: ${trackIds.size}`);
 
   if (trackIds.size === 0) {
     console.log('Track id Set is empty');
