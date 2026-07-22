@@ -56,7 +56,6 @@ const DiscoverPage = () => {
     setError('');
 
     try {
-      // const res = await fetch('/api/recommendations', {
       const res = await fetch(`${API_URL}/api/recommendations`, {
         method: 'POST',
         credentials: 'include',
@@ -68,6 +67,17 @@ const DiscoverPage = () => {
           song,
         }),
       });
+
+      if (!res.ok) {
+        if (res.status === 429) {
+          setError(
+            "You've used all your searches for today. Come back tomorrow!",
+          );
+        } else {
+          setError('Something went wrong. Please try again.');
+        }
+        return;
+      }
 
       const data = (await res.json()) as RecommendationsResponse;
       setSearchResult(data.finalTracks);
