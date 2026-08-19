@@ -26,3 +26,9 @@ jobs:
         env:
           DATABASE_URI: postgres://fake:fake@localhost:5432/fake
           OPENAI_API_KEY: sk-fake-key-for-testing
+          SPOTIFY_CLIENT_ID: fake-spotify-client-id
+          SPOTIFY_CLIENT_SECRET: fake-spotify-client-secret
+          SESSION_SECRET: fake-session-secret
+          CORS_ORIGIN: http://localhost:5173
+          PORT: '8080'
+          REDIRECT_URI: http://localhost:8080/api/auth/spotify/callback
