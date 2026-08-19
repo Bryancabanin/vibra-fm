@@ -107,8 +107,8 @@ describe('handleSaveToPlaylist', () => {
       ['track-1', 'track-2'],
     );
 
-    expect(res.json).toHaveBeenCalledWith(
-      'https://open.spotify.com/playlist/playlist-1',
-    );
+    expect(res.json).toHaveBeenCalledWith({
+      url: 'https://open.spotify.com/playlist/playlist-1',
+    });
   });
 });
