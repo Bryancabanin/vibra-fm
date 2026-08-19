@@ -1,0 +1,34 @@
+name: GitHub Actions
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  server:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Clean install dependencies
+        run: npm ci
+      - name: Setup build
+        run: npm run build
+      - name: Setup test
+        run: npm test
+        env:
+          DATABASE_URI: postgres://fake:fake@localhost:5432/fake
+          OPENAI_API_KEY: sk-fake-key-for-testing
+          SPOTIFY_CLIENT_ID: fake-spotify-client-id
+          SPOTIFY_CLIENT_SECRET: fake-spotify-client-secret
+          SESSION_SECRET: fake-session-secret
+          CORS_ORIGIN: http://localhost:5173
+          PORT: '8080'
+          REDIRECT_URI: http://localhost:8080/api/auth/spotify/callback
